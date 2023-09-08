@@ -1,7 +1,6 @@
 package api
 
 import (
-	"dv4all/fiber-pg/db"
 	"dv4all/fiber-pg/utils"
 	"log"
 	"os"
@@ -60,23 +59,14 @@ func registerRoutes(api *fiber.App) {
 	// log.Println("Register routes...")
 
 	//todo list
-	api.Get("/todos", getTodoLists)
-	// api.Post("/todos", addTodoList)
-	// api.Put("/todos", updateTodoList)
-	// api.Delete("/todos/:listid", deleteTodoList)
+	api.Get("/list", getTodoLists)
+	api.Post("/list", addTodoList)
+	api.Put("/list", updateTodoList)
+	api.Delete("/list/:listid", deleteTodoList)
 
-}
-
-func getTodoLists(ctx *fiber.Ctx) error {
-	//get data from database
-	tls, err := db.GetAllTodoLists()
-	// check for error
-	if err != nil {
-		// construct error message
-		errResp := SetErrorResponse(err, ServerStatus{Status: 0, StatusText: ""})
-		return ctx.JSON(errResp)
-	}
-	// construct response
-	response := SetOKResponse(tls)
-	return ctx.JSON(response)
+	// todo items from specific list
+	api.Get("/todos/list/:listid", getTodoItems)
+	api.Post("/todos/list/:listid", addTodoItem)
+	api.Put("/todo/:id", updateTodoItem)
+	api.Delete("/todo/:id", deleteTodoItem)
 }

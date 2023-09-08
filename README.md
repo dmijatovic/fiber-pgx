@@ -7,7 +7,6 @@ Then I read this [article, which confirms my assumptions](https://levelup.gitcon
 
 Based on the scores in that article I decided to try to benchmark few pg drivers for golang, starting with the most performant pgx and widely used pg.
 
-
 ## Requirements
 
 This project requires Postgres server running. Use docker compose file in the postgres folder
