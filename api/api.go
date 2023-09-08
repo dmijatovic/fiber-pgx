@@ -18,7 +18,7 @@ type Config struct {
 func Start() *fiber.App {
 	// load AppName
 	cfg := Config{
-		name: utils.GetEnv("API_NAME", "fiber-pg"),
+		name: utils.GetEnv("API_NAME", "fiber-pgx"),
 		host: utils.GetEnv("API_HOST", ":8080"),
 	}
 

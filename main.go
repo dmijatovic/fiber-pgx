@@ -18,18 +18,19 @@ func onQuit(app *fiber.App, pgdb *pgxpool.Pool, close chan bool) {
 	signal.Notify(interupt, os.Interrupt)
 
 	// shutdown api
-	app.Shutdown()
 	log.Println("Shutdown api...")
+	app.Shutdown()
 	// shutdown database
-	pgdb.Close()
 	log.Println("Closing database...")
+	pgdb.Close()
 
 	// notify others now
 	close <- true
 }
 
 func main() {
-	// log.Println("Starting...")
+	log.Println("Starting...")
+
 	// connect DB
 	pgdb := db.Connect()
 

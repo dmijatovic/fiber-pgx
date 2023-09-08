@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -54,11 +55,13 @@ func Connect() *pgxpool.Pool {
 		os.Exit(1)
 	}
 	// test connection
+	time.Sleep(time.Second * 10)
 	err = pgxdb.Ping(context.Background())
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
+	log.Println("Connected to database...", time.DateTime)
 	// save to local variable
 	sqlDB = pgxdb
 	// pass refference back
