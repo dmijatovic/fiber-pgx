@@ -1,4 +1,4 @@
-module dv4all/fiber-pg
+module dv4all/fiber-pgx
 
 go 1.21.0
 

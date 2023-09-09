@@ -19,11 +19,20 @@ services:
 
   todo-api:
     container_name: todo-api
-    build: .
-    image: dv4all/todo-fiber2-api:0.0.1
+    build:
+      context: .
+      # dockerfile to use for build
+      dockerfile: Dockerfile_debian
+    image: dv4all/todo-fiber2-api:0.0.3
+    # added to prevent fiber using pid=1 which disables prefork mode!!!
+    pid: host
     environment:
-      API_HOST: 0.0.0.0:8080
       API_NAME: todo-api
+      API_HOST: 0.0.0.0:8080
+      # run multiple processes, default is false
+      API_PREFORK: true
+      # how many child processes to run, total API_MAXPROC + 1
+      API_MAXPROC: 3
       PG_HOST: pgdb
       PG_PORT: 5432
       PG_USER: postgres

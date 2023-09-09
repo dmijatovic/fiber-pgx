@@ -1,50 +1,32 @@
 package main
 
 import (
-	"dv4all/fiber-pg/api"
-	"dv4all/fiber-pg/db"
-	"log"
+	"dv4all/fiber-pgx/api"
+	"dv4all/fiber-pgx/db"
+	"dv4all/fiber-pgx/utils"
 	"os"
 	"os/signal"
-
-	"github.com/gofiber/fiber/v2"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func onQuit(app *fiber.App, pgdb *pgxpool.Pool, close chan bool) {
-	// Create channel to signify interupt signal is being sent
+func main() {
+	// log start of main fiber process
+	utils.LogOnMainProcess("Starting...to stop use Ctrl+C")
+
+	// connect DB
+	go db.Connect()
+	// start api
+	go api.Start()
+
+	// listen to interrupt signal
 	interupt := make(chan os.Signal, 1)
 	// When an interrupt is sent, notify the channel
 	signal.Notify(interupt, os.Interrupt)
+	// executions stop here untill interrupt is send
+	// and will resume after signal is received
+	// NOTE! if you use syntax bellow it won't continue?!?
+	// _ := <-interupt
+	<-interupt
 
-	// shutdown api
-	log.Println("Shutdown api...")
-	app.Shutdown()
-	// shutdown database
-	log.Println("Closing database...")
-	pgdb.Close()
-
-	// notify others now
-	close <- true
-}
-
-func main() {
-	log.Println("Starting...")
-
-	// connect DB
-	pgdb := db.Connect()
-
-	// start api
-	app := api.Start()
-
-	// Create channel to signify interupt signal is being sent
-	close := make(chan bool, 1)
-
-	// listen to quit event
-	go onQuit(app, pgdb, close)
-
-	// wait for close sign
-	_ = <-close
-
-	// log.Println("Everything closed...")
+	// Log closing of main app processes
+	utils.LogOnMainProcess("FiberAPI...main...STOPED")
 }

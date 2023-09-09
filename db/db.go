@@ -2,7 +2,7 @@ package db
 
 import (
 	"context"
-	"dv4all/fiber-pg/utils"
+	"dv4all/fiber-pgx/utils"
 	"fmt"
 	"log"
 	"os"
@@ -54,14 +54,14 @@ func Connect() *pgxpool.Pool {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	// test connection
+	// test connection after 10 sec.
 	time.Sleep(time.Second * 10)
 	err = pgxdb.Ping(context.Background())
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	log.Println("Connected to database...", time.DateTime)
+	utils.LogOnMainProcess("Connect to database...OK")
 	// save to local variable
 	sqlDB = pgxdb
 	// pass refference back
@@ -69,7 +69,7 @@ func Connect() *pgxpool.Pool {
 }
 
 func Close(pgxdb *pgxpool.Pool) {
-	log.Println("Closing DB server...")
+	// log.Println("Closing DB server...")
 	// close connection
 	pgxdb.Close()
 }

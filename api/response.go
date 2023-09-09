@@ -1,7 +1,7 @@
 package api
 
 import (
-	"dv4all/fiber-pg/db"
+	"dv4all/fiber-pgx/db"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
